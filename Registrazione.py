@@ -1,7 +1,7 @@
 import tkinter as tk
 import sqlite3
 
-def Aggiungi_Utente():#connessione a db e inserimento dati
+def Aggiungi_Utente(window2,nome_entry,cognome_entry):#connessione a db e inserimento dati
     # Stabilisci la connessione al database SQLite
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
@@ -19,33 +19,35 @@ def Aggiungi_Utente():#connessione a db e inserimento dati
     conn.commit()
     cursor.close()
     conn.close()
+    window2.destroy() 
 
 
 
 #PAGINA 2
 #secondo bottone CHE APRE UNA NUOVA PAGINA
-window2 =tk.Tk()
-window2.title("registrazione")
-window2.geometry("600x600")
-window2.resizable(False,False)
+def open_window2():
+ window2 =tk.Tk()
+ window2.title("registrazione")
+ window2.geometry("600x600")
+ window2.resizable(False,False)
 
 
-nome_label = tk.Label(window2, text="Nome")
-nome_entry = tk.Entry(window2)
-cognome_label = tk.Label(window2, text="Cognome")
-cognome_entry = tk.Entry(window2)
+ nome_label = tk.Label(window2, text="Nome")
+ nome_entry = tk.Entry(window2)
+ cognome_label = tk.Label(window2, text="Cognome")
+ cognome_entry = tk.Entry(window2)
 
-inserisci_button = tk.Button(window2, text="Inserisci", command=Aggiungi_Utente)
+ inserisci_button = tk.Button(window2, text="Inserisci", command=lambda: Aggiungi_Utente(window2,nome_entry,cognome_entry))
 
 # Posiziona i widget nella finestra
 
-nome_label.pack()
-nome_entry.pack()
-cognome_label.pack()
-cognome_entry.pack()
-inserisci_button.pack()
+ nome_label.pack()
+ nome_entry.pack()
+ cognome_label.pack()
+ cognome_entry.pack()
+ inserisci_button.pack()
 
 
 
-window2.mainloop()
+ window2.mainloop()
 
