@@ -9,40 +9,33 @@ from tkinter import messagebox
 def Aggiungi_Utente(window2,nome_entry,cognome_entry,saldo_entry):#connessione a db e inserimento dati
     # Stabilisci la connessione al database SQLite
  
- conn = sqlite3.connect('PYTHON.db')
- cursor = conn.cursor()
+ 
  nome = nome_entry.get()
  cognome = cognome_entry.get()
  saldo_da_controllare=saldo_entry.get()
  saldo=0
  if not nome_entry.get() or not cognome_entry.get() or not saldo_entry.get():
      messagebox.showerror("Errore", "Tutti i campi devono essere compilati")
-     
+     return
      
  elif  int(saldo_da_controllare) == 0:
             messagebox.showerror("Errore in inserimento ", "saldo inserito =0")
-        
+            return
             
  elif ricerca_nome(nome,cognome):
         
     # Ottieni il nome del campo e il tipo di dati dall'interfaccia utente
     
         messagebox.showerror("Errore", "Un utente con questo nome e cognome è già registrato")
-        
- else:
-    # Esegui la query ALTER TABLE per aggiungere il nuovo campo
-      saldo=int(saldo_da_controllare)
-      insert_query = "INSERT INTO UTENTI (nome, cognome,saldo) VALUES (? , ?, ?)"
-      cursor.execute(insert_query, (nome, cognome,saldo))
-      
-      messagebox.showinfo("OPERAZIONE COMPLETATA","ACOUNT CREATO CORRETTAMENTE") 
-      window2.destroy()
-      MenuPage(nome,cognome)
+        return
+ saldo = int(saldo_da_controllare)
+ with sqlite3.connect('PYTHON.db') as conn:
+        cursor = conn.cursor()
 
-    # Chiudi la connessione al database
-      conn.commit()
- cursor.close()
- conn.close()
+        
+        insert_query = "INSERT INTO UTENTI (nome, cognome, saldo) VALUES (?, ?, ?)"
+        cursor.execute(insert_query, (nome, cognome, saldo))
+        conn.commit()
       #window2.destroy()
      
 
