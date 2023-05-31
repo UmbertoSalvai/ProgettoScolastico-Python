@@ -1,18 +1,18 @@
 #import mysql.connector
 import tkinter as tk
-import sqlite3
-from Registrazione import  open_window2
-from Accedi import  open_window3
+
+from Registrazione import  RegistrazionePage
+from Accedi import  AccediPage
 
 
 def click1():#funzioni per far prima chiudere la pgina e poi aprire quella nuova
     window.destroy()
-    open_window2()
+    RegistrazionePage()
 def click2():
     window.destroy()
-    open_window3()
+    AccediPage()
     
-
+  
     
     
 

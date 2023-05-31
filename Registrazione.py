@@ -1,49 +1,56 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import *
 import sqlite3
+from Scrivere import *
+from Menu import MenuPage
+from tkinter import messagebox
 
-def solo_lettere(text):#funzione per inserire solo lettere nell'inserimento dati
-    if text.isalpha():
-        return True
-    else:
-        return False
-    
-def solo_numeri(text):#funzione per inserire solo nuemri nell'inserimento dati
-    if text.isdigit():
-        return True
-    else:
-        return False   
     
 def Aggiungi_Utente(window2,nome_entry,cognome_entry,saldo_entry):#connessione a db e inserimento dati
     # Stabilisci la connessione al database SQLite
-    conn = sqlite3.connect('PYTHON.db')
-    cursor = conn.cursor()
-    nome = nome_entry.get()
-    cognome = cognome_entry.get()
-    if saldo_entry == 0:
+ 
+ conn = sqlite3.connect('PYTHON.db')
+ cursor = conn.cursor()
+ nome = nome_entry.get()
+ cognome = cognome_entry.get()
+ saldo_da_controllare=saldo_entry.get()
+ saldo=0
+ if not nome_entry.get() or not cognome_entry.get() or not saldo_entry.get():
+     messagebox.showerror("Errore", "Tutti i campi devono essere compilati")
+     
+     
+ elif  int(saldo_da_controllare) == 0:
             messagebox.showerror("Errore in inserimento ", "saldo inserito =0")
-            saldo=0
-    else:
-     saldo=saldo_entry.get()
+        
+            
+ elif ricerca_nome(nome,cognome):
+        
     # Ottieni il nome del campo e il tipo di dati dall'interfaccia utente
-    if ricerca_nome(nome,cognome):
-       messagebox.showerror("Errore", "Un utente con questo nome e cognome è già registrato")
-    else:
-    # Esegui la query ALTER TABLE per aggiungere il nuovo campo
-     insert_query = "INSERT INTO UTENTI (nome, cognome,saldo) VALUES (? , ?, ?)"
-     cursor.execute(insert_query, (nome, cognome,saldo))
     
+        messagebox.showerror("Errore", "Un utente con questo nome e cognome è già registrato")
+        
+ else:
+    # Esegui la query ALTER TABLE per aggiungere il nuovo campo
+      saldo=int(saldo_da_controllare)
+      insert_query = "INSERT INTO UTENTI (nome, cognome,saldo) VALUES (? , ?, ?)"
+      cursor.execute(insert_query, (nome, cognome,saldo))
+      
+      messagebox.showinfo("OPERAZIONE COMPLETATA","ACOUNT CREATO CORRETTAMENTE") 
+      window2.destroy()
+      MenuPage(nome,cognome)
+
     # Chiudi la connessione al database
-    conn.commit()
-    cursor.close()
-    conn.close()
-    window2.destroy() 
+      conn.commit()
+ cursor.close()
+ conn.close()
+      #window2.destroy()
+     
 
 
 
 #PAGINA 
 
-def open_window2():
+def  RegistrazionePage():
  window2 =tk.Tk()
  window2.title("registrazione")
  window2.geometry("600x600")
@@ -92,3 +99,4 @@ def ricerca_nome(nome,cognome):
     
     # Restituisci True se il nome esiste già, altrimenti False
     return result is not None
+

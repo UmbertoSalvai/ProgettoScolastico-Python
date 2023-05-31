@@ -2,8 +2,7 @@ from  Registrazione import ricerca_nome
 from tkinter import messagebox
 from Menu import *
 import tkinter as tk
-from Registrazione import solo_lettere
-from Registrazione import solo_numeri
+from Scrivere import *
 
 
 def ricerca(nome_entry,cognome_entry,window3):
@@ -29,7 +28,7 @@ def ricerca(nome_entry,cognome_entry,window3):
 
    
 
-def open_window3():
+def AccediPage():
     window3 =tk.Tk()
     window3.title("Accedi")
     window3.geometry("600x600")

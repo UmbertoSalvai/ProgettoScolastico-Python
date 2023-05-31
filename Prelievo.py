@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import sqlite3
-from Registrazione import solo_numeri
+from Scrivere import *
+
 def Prelievo(prelievopage,aggiunta_entry,nome,cognome):
     
     conn = sqlite3.connect('PYTHON.db')
@@ -14,7 +15,7 @@ def Prelievo(prelievopage,aggiunta_entry,nome,cognome):
     conn.commit()
     cursor.close()
     conn.close()
-    messagebox.INFO("Inserimento corretto ", "L'inserimento è andato a buon fine")
+    messagebox.showinfo("OPERAZIONE RIUSCITA","prelievo andato a buon fine")
 
     prelievopage.destroy()
 
