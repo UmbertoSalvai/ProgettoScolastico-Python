@@ -17,7 +17,7 @@ def ricerca(nome_entry,cognome_entry,window3):
      if ricerca_nome(nome, cognome):
        messagebox.showinfo("UTENTE TROVATO", "Accesso eseguito")
        window3.destroy()
-       open_window4(nome_entry,cognome_entry)
+       open_window4(nome,cognome)
 
        break       
 
