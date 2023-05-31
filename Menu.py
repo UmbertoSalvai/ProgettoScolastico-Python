@@ -1,7 +1,7 @@
 import tkinter as tk
 import sqlite3
 from Registrazione import solo_numeri
-
+from Prelievo import *
     
 def Saldo(nome, cognome):#funzione per visualizzare il saldo
     window5=tk.Tk()
@@ -21,7 +21,8 @@ def Saldo(nome, cognome):#funzione per visualizzare il saldo
     else:
         errore_label = tk.Label(window5, text="Non è presente il saldo")
         errore_label.pack()
-    
+    Esci_button = tk.Button(window5, text="Chiudi", command=window5.destroy)
+    Esci_button.pack()
     window5.mainloop()
 
 def Aggiunta(window6,aggiunta_entry,nome,cognome):
@@ -36,7 +37,13 @@ def Aggiunta(window6,aggiunta_entry,nome,cognome):
     conn.commit()
     cursor.close()
     conn.close()
-    window6.destroy()
+    Esci_button = tk.Button(window6, text="Chiudi", command=window6.destroy)
+    Esci_button.pack()
+   
+   
+    
+
+    
 
 
 
@@ -57,6 +64,8 @@ def Aggiungi_Saldo(nome,cognome):#funzione per aggiungere il saldo
     
     aggiungi_button= tk.Button(window6, text="aggiungi saldo",command=lambda:Aggiunta(window6,aggiunta_entry,nome,cognome))
     aggiungi_button.pack()
+    Esci_button = tk.Button(window6, text="Chiudi", command=window6.destroy)
+    Esci_button.pack()
     
     #cursor.execute(query, (nome, cognome))
     #conn.commit()
@@ -66,17 +75,20 @@ def Aggiungi_Saldo(nome,cognome):#funzione per aggiungere il saldo
     
     
 
-def open_window4(nome,cognome):
-    window4 =tk.Tk()
-    window4.title("MENU'")
-    window4.geometry("800x800")
-    window4.resizable(False,False)
+def MenuPage(nome,cognome,):
+    menupage =tk.Tk()
+    menupage.title("MENU'")
+    menupage.geometry("800x800")
+    menupage.resizable(False,False)
     
 
-    TornaIndietro_button= tk.Button(window4, text="Inserisci")
-    VisualizzaSaldo_button= tk.Button(window4, text="Visualizza il tuo saldo",command=lambda:Saldo(nome,cognome))
-    AggiungiSaldo_button= tk.Button(window4, text="Aggiungi saldo",command=lambda:Aggiungi_Saldo(nome,cognome))
+    TornaIndietro_button= tk.Button(menupage, text="Inserisci")
+    VisualizzaSaldo_button= tk.Button(menupage, text="Visualizza il tuo saldo",command=lambda:Saldo(nome,cognome))
+    AggiungiSaldo_button= tk.Button(menupage, text="Aggiungi saldo",command=lambda:Aggiungi_Saldo(nome,cognome))
+    PrelievoSaldo=tk.Button(menupage,text="Prelievo",command=lambda:open_Prelievopage(nome,cognome))
     TornaIndietro_button.pack()
     VisualizzaSaldo_button.pack()
     AggiungiSaldo_button.pack()
-    window4.mainloop()
+    PrelievoSaldo.pack()
+   
+    menupage.mainloop()

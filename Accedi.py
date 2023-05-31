@@ -1,6 +1,6 @@
 from  Registrazione import ricerca_nome
 from tkinter import messagebox
-from Menu import open_window4
+from Menu import *
 import tkinter as tk
 from Registrazione import solo_lettere
 from Registrazione import solo_numeri
@@ -17,7 +17,7 @@ def ricerca(nome_entry,cognome_entry,window3):
      if ricerca_nome(nome, cognome):
        messagebox.showinfo("UTENTE TROVATO", "Accesso eseguito")
        window3.destroy()
-       open_window4(nome,cognome)
+       MenuPage(nome,cognome)
 
        break       
 
