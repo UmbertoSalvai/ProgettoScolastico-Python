@@ -1,48 +1,55 @@
 import tkinter as tk
 import sqlite3
-
+from tkinter import messagebox
 from Scrivere import *
-
+from OraDiOggi import *
 from Prelievo import *
 
 
-def Aggiunta(window6,aggiunta_entry,nome,cognome):
-    
+def Aggiunta(saldoPage,aggiunta_entry,nome,cognome):
+    ora=str(oraCorrente())
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
     aggiunti=aggiunta_entry.get()
-     
-    query="UPDATE UTENTI SET Saldo = Saldo + ? WHERE nome=? AND cognome=?"
-    cursor.execute(query, (aggiunti,nome, cognome))
+
+    select_query = "SELECT (IDutenti) FROM Utenti WHERE Nome = ? and Cognome = ? "
+    cursor.execute(select_query, (nome,cognome))
+    result = cursor.fetchone()
+    Id=result[0]
     
+    query="UPDATE ContoCorrente SET Saldo = Saldo + ? WHERE IDutente=?"
+    cursor.execute(query, (aggiunti,Id))
+    
+    query2="INSERT INTO Transazioni(Tipo, Data,Importo,IDutente) VALUES ('Deposito',? ,?,?) "
+    cursor.execute(query2, (ora,aggiunti,Id ))
+
     conn.commit()
     cursor.close()
     conn.close()
     messagebox.showinfo("OPERAZIONE RIUSCITA","importo inserito correttamente")
-    window6.destroy()
+    saldoPage.destroy()
     
    
 
 def Aggiungi_Saldo(nome,cognome):#funzione per aggiungere il saldo
-    #window4.destroy()
-    window6=tk.Tk()
-    window6.title("saldo")
-    window6.geometry("400x400")
-    window6.resizable(False,False)
     
-    validation_numeri = window6.register(solo_numeri)
-    aggiunta_label = tk.Label(window6, text="qaunto vuoi aggiungere al tuo conto?")
+    saldoPage=tk.Tk()
+    saldoPage.title("saldo")
+    saldoPage.geometry("400x400")
+    saldoPage.resizable(False,False)
+    
+    validation_numeri = saldoPage.register(solo_numeri)
+    aggiunta_label = tk.Label(saldoPage, text="qaunto vuoi aggiungere al tuo conto?")
     aggiunta_label.pack()
-    aggiunta_entry = tk.Entry(window6, validate="key", validatecommand=(validation_numeri, '%S'))
+    aggiunta_entry = tk.Entry(saldoPage, validate="key", validatecommand=(validation_numeri, '%S'))
     aggiunta_entry.pack()
     
     
     
-    aggiungi_button= tk.Button(window6, text="aggiungi saldo",command=lambda:Aggiunta(window6,aggiunta_entry,nome,cognome))
+    aggiungi_button= tk.Button(saldoPage, text="aggiungi saldo",command=lambda:Aggiunta(saldoPage,aggiunta_entry,nome,cognome))
     aggiungi_button.pack()
-    Esci_button = tk.Button(window6, text="Chiudi", command=window6.destroy)
+    Esci_button = tk.Button(saldoPage, text="Chiudi", command=saldoPage.destroy)
     Esci_button.pack()
     
-    #cursor.execute(query, (nome, cognome))
-    #conn.commit()
-    window6.mainloop()
+    
+    saldoPage.mainloop()

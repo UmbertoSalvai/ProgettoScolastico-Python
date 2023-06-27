@@ -2,22 +2,43 @@ import tkinter as tk
 from tkinter import messagebox
 import sqlite3
 from Scrivere import *
+from OraDiOggi import *
 
-def Prelievo(prelievopage,aggiunta_entry,nome,cognome):
-    
+def Prelievo(prelievopage,tolti_entry,nome,cognome):
+    ora=str(oraCorrente())
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
-    aggiunti=aggiunta_entry.get()
-     
-    query="UPDATE UTENTI SET Saldo = Saldo - ? WHERE nome=? AND cognome=?"
-    cursor.execute(query, (aggiunti,nome, cognome))
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
-    messagebox.showinfo("OPERAZIONE RIUSCITA","prelievo andato a buon fine")
+    tolti=int(tolti_entry.get())
 
-    prelievopage.destroy()
+  
+
+    select_query = "SELECT (IDutenti) FROM Utenti WHERE Nome = ? and Cognome = ? "
+    cursor.execute(select_query, (nome,cognome))
+    result = cursor.fetchone()
+    Id=result[0]
+
+    saldo_query = "SELECT (Saldo) FROM ContoCorrente WHERE IDutente=? "
+    cursor.execute(saldo_query, (Id,))
+    result = cursor.fetchone()
+    saldo_attuale=result[0]
+    if tolti>saldo_attuale:
+        messagebox.showerror("Errore  ", "L'importo che vuole prelevare è maggiore dell'importo disponibile")
+        tolti_entry.delete(0, 'end') 
+        return
+    else:
+        query="UPDATE ContoCorrente SET Saldo = Saldo - ? WHERE IDutente=?"
+        cursor.execute(query, (tolti,Id))
+
+        query2="INSERT INTO Transazioni(Tipo, Data,Importo,IDutente) VALUES ('Prelievo',? ,?,?) "
+        cursor.execute(query2, (ora,tolti,Id ))
+
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        messagebox.showinfo("OPERAZIONE RIUSCITA","prelievo andato a buon fine")
+
+        prelievopage.destroy()
 
     
    
@@ -31,15 +52,15 @@ def open_Prelievopage(nome,cognome):
 
     
     validation_numeri = prelievopage.register(solo_numeri)
-    aggiunta_label = tk.Label(prelievopage, text="qaunto vuoi prelevare dal tuo conto?")
-    aggiunta_label.pack()
-    aggiunta_entry = tk.Entry(prelievopage, validate="key", validatecommand=(validation_numeri, '%S'))
-    aggiunta_entry.pack()
+    tolti_label = tk.Label(prelievopage, text="qaunto vuoi prelevare dal tuo conto?")
+    tolti_label.pack()
+    tolti_entry = tk.Entry(prelievopage, validate="key", validatecommand=(validation_numeri, '%S'))
+    tolti_entry.pack()
     
     
     
-    aggiungi_button= tk.Button(prelievopage, text="togli saldo",command=lambda:Prelievo(prelievopage,aggiunta_entry,nome,cognome))
-    aggiungi_button.pack()
+    tolti_button= tk.Button(prelievopage, text="togli saldo",command=lambda:Prelievo(prelievopage,tolti_entry,nome,cognome))
+    tolti_button.pack()
     Esci_button = tk.Button(prelievopage, text="Chiudi", command=prelievopage.destroy)
     Esci_button.pack()
     

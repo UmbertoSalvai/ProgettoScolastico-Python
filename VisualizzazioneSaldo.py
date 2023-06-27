@@ -9,12 +9,19 @@ def Saldo(nome, cognome):#funzione per visualizzare il saldo
     saldopage.resizable(False,False)
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
-    query="SELECT Saldo FROM UTENTI WHERE nome=? AND cognome=?"
-    cursor.execute(query, (nome, cognome))
+
+
+    select_query = "SELECT (IDutenti) FROM Utenti WHERE Nome = ? and Cognome = ? "
+    cursor.execute(select_query, (nome,cognome))
     result = cursor.fetchone()
+    Id=result
+        
+    query="SELECT Saldo FROM ContoCorrente WHERE IDutente=?"
+    cursor.execute(query, (Id))
+    result1 = cursor.fetchone()
     
-    if result:
-        saldo = result[0]
+    if result1:
+        saldo = result1[0]
         saldo_label = tk.Label(saldopage, text=f"Il tuo saldo attuale è: {saldo} €")
         saldo_label.pack()
     else:

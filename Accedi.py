@@ -5,17 +5,17 @@ import tkinter as tk
 from Scrivere import *
 
 
-def ricerca(nome_entry,cognome_entry,window3):
+def ricerca(nome_entry,cognome_entry,accediPage):
    x=True 
    while x:
      nome = nome_entry.get()
      cognome = cognome_entry.get()
      
-     nome_entry.delete(0, tk.END)
-     cognome_entry.delete(0, tk.END)
+     nome_entry.delete(0, 'end')
+     cognome_entry.delete(0, 'end')
      if ricerca_nome(nome, cognome):
        messagebox.showinfo("UTENTE TROVATO", "Accesso eseguito")
-       window3.destroy()
+       accediPage.destroy()
        MenuPage(nome,cognome)
 
        break       
@@ -29,21 +29,21 @@ def ricerca(nome_entry,cognome_entry,window3):
    
 
 def AccediPage():
-    window3 =tk.Tk()
-    window3.title("Accedi")
-    window3.geometry("600x600")
-    window3.resizable(False,False)
+    accediPage =tk.Tk()
+    accediPage.title("Accedi")
+    accediPage.geometry("600x600")
+    accediPage.resizable(False,False)
 
 
-    validation_lettere = window3.register(solo_lettere) 
-    validation_numeri = window3.register(solo_numeri)
+    validation_lettere = accediPage.register(solo_lettere) 
+    validation_numeri = accediPage.register(solo_numeri)
 
-    nome_label = tk.Label(window3, text="Nome")
-    nome_entry = tk.Entry(window3, validate="key", validatecommand=(validation_lettere, '%S'))
-    cognome_label = tk.Label(window3, text="Cognome")
-    cognome_entry = tk.Entry(window3, validate="key", validatecommand=(validation_lettere, '%S'))
+    nome_label = tk.Label(accediPage, text="Nome")
+    nome_entry = tk.Entry(accediPage, validate="key", validatecommand=(validation_lettere, '%S'))
+    cognome_label = tk.Label(accediPage, text="Cognome")
+    cognome_entry = tk.Entry(accediPage, validate="key", validatecommand=(validation_lettere, '%S'))
    
-    inserisci_button = tk.Button(window3, text="Inserisci", command=lambda:ricerca(nome_entry,cognome_entry,window3))
+    inserisci_button = tk.Button(accediPage, text="Inserisci", command=lambda:ricerca(nome_entry,cognome_entry,accediPage))
     
         
     nome_label.pack()
@@ -51,4 +51,4 @@ def AccediPage():
     cognome_label.pack()
     cognome_entry.pack()
     inserisci_button.pack()
-    window3.mainloop()
+    accediPage.mainloop()
