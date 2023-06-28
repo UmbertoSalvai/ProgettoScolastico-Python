@@ -4,7 +4,7 @@ from VisualizzazioneSaldo import Saldo
 from Scrivere import *
 from Deposito import Aggiungi_Saldo
 from Prelievo import open_Prelievopage
-
+from Storico_Transazioni import *
     
 
 def MenuPage(nome,cognome,):
@@ -37,10 +37,17 @@ def MenuPage(nome,cognome,):
                                     **button_style)
     prelievo_saldo_button = tk.Button(menupage, text="Prelievo", command=lambda: open_Prelievopage(nome, cognome),
                                     **button_style)
-
+    Storico_Transazioni_saldo_button = tk.Button(menupage, text="Storico Transazioni", command=lambda: StoricoTransazioni(nome, cognome),
+                                    **button_style)
+    chiudi_bottone = tk.Button(menupage, text="Chiudi", command=menupage.destroy,
+                               bg="#FF0000", fg="#FFFFFF", font=("Arial", 12))
+    
     torna_indietro_button.pack(pady=(220, 0))
     visualizza_saldo_button.pack(pady=(5, 0))
     aggiungi_saldo_button.pack(pady=(5, 0))
     prelievo_saldo_button.pack(pady=(5, 0))
+    Storico_Transazioni_saldo_button.pack(pady=(5,0))
+    chiudi_bottone.pack(pady=(100,20))
+
 
     menupage.mainloop()
