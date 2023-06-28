@@ -8,7 +8,7 @@ def Prelievo(prelievopage,tolti_entry,nome,cognome):
     ora=str(oraCorrente())
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
-    tolti=int(tolti_entry.get())
+    tolti=tolti_entry.get()
 
   
 
@@ -21,7 +21,19 @@ def Prelievo(prelievopage,tolti_entry,nome,cognome):
     cursor.execute(saldo_query, (Id,))
     result = cursor.fetchone()
     saldo_attuale=result[0]
-    if tolti>saldo_attuale:
+
+    if not tolti_entry.get():
+        messagebox.showerror("Errore in inserimento", "Inserire un valore numerico")
+        tolti_entry.delete(0, 'end')
+        return
+    
+    tolti = float(tolti)
+    if  tolti ==0  :
+       
+        messagebox.showerror("Errore in inserimento", "saldo inserito = 0")
+        tolti_entry.delete(0, 'end') 
+        return
+    elif tolti>saldo_attuale:
         messagebox.showerror("Errore  ", "L'importo che vuole prelevare è maggiore dell'importo disponibile")
         tolti_entry.delete(0, 'end') 
         return
@@ -45,28 +57,41 @@ def Prelievo(prelievopage,tolti_entry,nome,cognome):
    
     
 def open_Prelievopage(nome,cognome):
-    prelievopage =tk.Tk()
-    prelievopage.title("prelievo")
-    prelievopage.geometry("600x600")
-    prelievopage.resizable(False,False)
+    prelievopage = tk.Tk()
+    prelievopage.title("Prelievo")
+    prelievopage.geometry("400x400")
+    prelievopage.resizable(False, False)
+    prelievopage.configure(background="#00008B")
 
-    
     validation_numeri = prelievopage.register(solo_numeri)
-    tolti_label = tk.Label(prelievopage, text="qaunto vuoi prelevare dal tuo conto?")
-    tolti_label.pack()
-    tolti_entry = tk.Entry(prelievopage, validate="key", validatecommand=(validation_numeri, '%S'))
-    tolti_entry.pack()
-    
-    
-    
-    tolti_button= tk.Button(prelievopage, text="togli saldo",command=lambda:Prelievo(prelievopage,tolti_entry,nome,cognome))
-    tolti_button.pack()
-    Esci_button = tk.Button(prelievopage, text="Chiudi", command=prelievopage.destroy)
-    Esci_button.pack()
-    
-    #cursor.execute(query, (nome, cognome))
-    #conn.commit()
+
+    tolti_label = tk.Label(prelievopage, text="Quanto vuoi prelevare dal tuo conto?", font=("Arial", 14),bg="#00008B",
+                            fg="#FFFFFF")
+    tolti_label.pack(pady=(50, 10))
+
+    tolti_entry = tk.Entry(prelievopage, validate="key", validatecommand=(validation_numeri, '%S'), font=("Arial", 14))
+    tolti_entry.pack(pady=(0, 10))
+
+    button_style = {
+        "font": ("Arial", 12),
+        "width": 15,
+        "height": 2,
+        "bg": "#FFFFFF",
+        "fg": "#000000",
+        "activebackground": "#A9D2FF",
+        "bd": 0,
+    }
+
+    tolti_button = tk.Button(prelievopage, text="Togli saldo",
+                            command=lambda: Prelievo(prelievopage, tolti_entry, nome, cognome), **button_style)
+    tolti_button.pack(pady=(0, 10))
+
+    chiudi_bottone = tk.Button(prelievopage, text="Chiudi", command=prelievopage.destroy,
+                            bg="#FF0000", fg="#FFFFFF", font=("Arial", 12))
+    chiudi_bottone.pack(pady=(100, 20))
+
     prelievopage.mainloop()
+
 
 
 

@@ -13,15 +13,18 @@ def Deposito(aggiungiPage,aggiunta_entry,nome,cognome):
     
     aggiunti=aggiunta_entry.get()
      
-    aggiunta_entry.delete(0, 'end')
+    
 
-    if not aggiunti():
+    if not aggiunta_entry.get():
         messagebox.showerror("Errore in inserimento", "Inserire un valore numerico")
+        aggiunta_entry.delete(0, 'end')
         return
+    
     aggiunti = float(aggiunti)
     if  aggiunti ==0  :
        
         messagebox.showerror("Errore in inserimento", "saldo inserito = 0")
+        aggiunta_entry.delete(0, 'end') 
         return
     else:
         select_query = "SELECT (IDutenti) FROM Utenti WHERE Nome = ? and Cognome = ? "
@@ -74,7 +77,8 @@ def Aggiungi_Saldo(nome,cognome):#funzione per aggiungere il saldo
                                 **button_style)
     aggiungi_button.pack(pady=(0, 10))
 
-    esci_button = tk.Button(aggiungiPage, text="Chiudi", command=aggiungiPage.destroy, **button_style)
-    esci_button.pack(pady=(0, 20))
+    chiudi_bottone = tk.Button(aggiungiPage, text="Chiudi", command=aggiungiPage.destroy,
+                               bg="#FF0000", fg="#FFFFFF", font=("Arial", 12))
+    chiudi_bottone.pack(pady=(100,20))
 
     aggiungiPage.mainloop()
