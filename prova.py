@@ -5,7 +5,6 @@ def ricerca_Transazioni(Id):
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
 
-    # Esegui la query SELECT per ottenere le transazioni dell'utente
     select_query = "SELECT * FROM ContoCorrente WHERE IDutente=?"
     cursor.execute(select_query, (Id,))
 
@@ -13,7 +12,7 @@ def ricerca_Transazioni(Id):
     cursor.close()
     conn.close()
 
-    # Restituisci la lista di righe restituite dalla query
+    # Restituisce la lista di righe restituite dalla query
     return result
 
 
@@ -31,7 +30,7 @@ def avvia_ricerca():
         result = ricerca_Transazioni(Id[0])
         if result:
             for row in result:
-                text_area.insert(tk.END, str(row) + "\n")  # Aggiungi ogni riga alla widget di testo
+                text_area.insert(tk.END, str(row) + "\n")  
         else:
             text_area.insert(tk.END, "Nessun risultato trovato.\n")
     else:

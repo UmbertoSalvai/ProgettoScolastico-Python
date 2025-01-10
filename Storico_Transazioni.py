@@ -1,59 +1,43 @@
 import tkinter as tk
 import sqlite3
 
-
-def StoricoTransazioni(nome,cognome):
+def StoricoTransazioni(nome, cognome):
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
 
     transazioniPage = tk.Tk()
-    transazioniPage.title("MENU'")
-    transazioniPage.geometry("600x600")
+    transazioniPage.title("STORICO TRANSAZIONI")
+    transazioniPage.geometry("500x600")
     transazioniPage.resizable(False, False)
-    transazioniPage.configure(background="#00008B")  
-    parte_superiore = tk.Frame(transazioniPage, bg="#FFFFFF")
-    parte_superiore.place(relx=0, rely=0, relwidth=1, relheight=0.2)
-    button_style = {
-            "font": ("Arial", 14),
-            "width": 15,
-            "height": 2,
-            "bg": "#FFFFFF",
-            "fg": "#000000",
-            "activebackground": "#A9D2FF",
-            "bd": 0,
-        }
-    
-    def avvia_ricerca():
-        result = ricerca_Transazioni(Id)
-        if result:
-            print(result)  # Stampa la riga restituita dalla query
-        else:
-            print("Nessun risultato trovato.")
+    transazioniPage.configure(background="#00008B")
+
+    intestazione = ["ID ","Tipo ", "       Data       " , "Importo "  ]    
+    stringa_sopra = tk.Label(transazioniPage, text="STORICO TRANSAZIONI", font=("Arial", 16, "bold"), bg="#00008B", fg="white")
+    stringa_sopra.grid(row=0, column=0, columnspan=2, pady=10)
+
+    transazioni_listbox = tk.Listbox(transazioniPage, width=50, height=30)
+    transazioni_listbox.grid(row=1, column=0, columnspan=2, padx=20, pady=10)
+
     select_query = "SELECT IDutenti FROM UTENTI WHERE nome = ? and cognome = ? "
-    cursor.execute(select_query, (nome,cognome))
-    Id = cursor.fetchone()
-    
-    avvia_ricerca_button = tk.Button(transazioniPage, command=avvia_ricerca(),text="Avvia la ricerca", **button_style)
-    titolo_label = tk.Label(parte_superiore, text="THE BANK", font=("Arial", 30, "bold", "italic"), bg="#FFFFFF")
-   
-    avvia_ricerca_button.pack(pady=(320, 0))
-    titolo_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    cursor.execute(select_query, (nome, cognome))
+    row = cursor.fetchone()
 
-    transazioniPage.mainloop()
+    if row:
+        id_utente = row[0]
+        select_query = "SELECT * FROM Transazioni WHERE IDUtente = ?"
+        cursor.execute(select_query, (id_utente,))
 
+        transazioni_listbox.insert(tk.END, intestazione)
 
-def ricerca_Transazioni(Id):
-    conn = sqlite3.connect('PYTHON.db')
-    cursor = conn.cursor()
+        transazioni = cursor.fetchall()
+        if transazioni:
+            for transazione in transazioni:
+                transazioni_listbox.insert(tk.END, transazione[:-1])
+        else:
+            transazioni_listbox.insert(tk.END, "Nessuna transazione trovata.")
     
-    # Esegui la query SELECT per verificare se il nome esiste già
-    select_query = "SELECT * FROM ContoCorrente WHERE IDutente==?"
-    cursor.execute(select_query, (Id))
-    
-    result = cursor.fetchone()
+
     cursor.close()
     conn.close()
-    
-    # Restituisci True se il nome esiste già, altrimenti False
-    return result is not None
 
+    transazioniPage.mainloop()

@@ -125,17 +125,17 @@ def ricerca_nome(nome,cognome):
     conn = sqlite3.connect('PYTHON.db')
     cursor = conn.cursor()
     
-    # Esegui la query SELECT per verificare se il nome esiste già
+    # Esegue la query SELECT per verificare se il nome esiste già
     select_query = "SELECT * FROM UTENTI WHERE nome = ? and cognome = ? "
     cursor.execute(select_query, (nome,cognome))
     
-    # Ottieni il risultato della query
+    # Ottiene il risultato della query
     result = cursor.fetchone()
     
-    # Chiudi la connessione al database
+    # Chiude la connessione al database
     cursor.close()
     conn.close()
     
-    # Restituisci True se il nome esiste già, altrimenti False
+    # Restituisce True se il nome esiste già, altrimenti False
     return result is not None
 

@@ -70,6 +70,6 @@ def AccediPage():
   inserisci_button.pack(pady=(20, 10))
 
   chiudi_bottone = tk.Button(accediPage, text="Chiudi", command=accediPage.destroy, bg="#FF0000", fg="#FFFFFF", font=("Arial", 12))
-  chiudi_bottone.pack(pady=(200, 20))
-
+  chiudi_bottone.pack(pady=(2, 20))
+  
   accediPage.mainloop()

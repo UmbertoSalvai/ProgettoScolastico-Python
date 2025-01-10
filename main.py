@@ -18,17 +18,17 @@ mainPage = tk.Tk()
 mainPage.title("Bank Website")
 mainPage.geometry("800x800")
 mainPage.resizable(False, False)
-mainPage.configure(background="#00008B")  # Light blue background color
+mainPage.configure(background="#00008B")  
 
-# Styling for buttons
+# Stile del bottone
 button_style = {
     "font": ("Arial", 14),
     "width": 15,
     "height": 2,
-    "bg": "#FFFFFF",  # Light blue background color
-    "fg": "#000000",  # Black text color
-    "activebackground": "#A9D2FF",  # Lighter shade of blue when button is clicked
-    "bd": 0,  # Border width
+    "bg": "#FFFFFF", 
+    "fg": "#000000",  
+    "activebackground": "#A9D2FF", 
+    "bd": 0,  
 }
 
 parte_superiore = tk.Frame(mainPage, bg="#FFFFFF")
